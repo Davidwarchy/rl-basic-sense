@@ -1,4 +1,3 @@
-# maze_env.py    
 import gym
 import numpy as np
 from maze_env import SimpleMazeEnv
@@ -20,12 +19,12 @@ maze = [
 ]
 env = SimpleMazeEnv(maze)
 
-# Q-table initialization
-q_table = np.zeros((env.observation_space.shape[0] * env.observation_space.shape[1], env.action_space.n))
+# Q-table initialization as a dictionary
+q_table = {}
 
 def state_to_index(state):
     # Convert local observation 3x3 grid to a single integer index
-    return int(''.join(map(str, state.flatten().astype(int))), 2)
+    return ''.join(map(str, state.flatten().astype(int)))
 
 # Training parameters
 num_episodes = 100
@@ -40,6 +39,10 @@ for episode in range(num_episodes):
     iterations = 0
 
     while not done:
+        # Initialize Q-values for the state if not already present
+        if state_index not in q_table:
+            q_table[state_index] = np.zeros(env.action_space.n)
+
         # Choose action using epsilon-greedy policy
         randy = np.random.random()
         if randy < epsilon:
@@ -49,6 +52,10 @@ for episode in range(num_episodes):
 
         next_local_obs, reward, done, _ = env.step(action)
         next_state_index = state_to_index(next_local_obs)
+
+        # Initialize Q-values for the next state if not already present
+        if next_state_index not in q_table:
+            q_table[next_state_index] = np.zeros(env.action_space.n)
 
         # Q-table update using Bellman equation
         q_table[state_index][action] += alpha * (reward + gamma * np.max(q_table[next_state_index]) - q_table[state_index][action])
@@ -60,9 +67,12 @@ for episode in range(num_episodes):
     q_table_history.append(q_table.copy())  # Save a copy of Q-table after each episode
     print(f"Episode {episode + 1} completed. Iterations: {iterations}")
 
+# Convert dictionary Q-table history to JSON serializable format
+q_table_history_serializable = [{k: v.tolist() for k, v in q.items()} for q in q_table_history]
+
 # Save Q-table history and episode iteration data to a single JSON file
 output_data = {
-    'q_table_history': [q.tolist() for q in q_table_history],  # Convert each Q-table to list for JSON serialization
+    'q_table_history': q_table_history_serializable,
     'episode_iterations': episode_iterations
 }
 
