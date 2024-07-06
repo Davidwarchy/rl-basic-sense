@@ -43,22 +43,24 @@ class SubmazePositionExtractor:
         for idx, (submatrix, position) in enumerate(unique_submatrices):
             print(f"Unique Submatrix {idx + 1} at position {position}:\n{submatrix}\n")
 
-# Define the original maze
-original_maze = np.array([[0, 0, 1, 0, 0, 1, 0],
-                          [0, 1, 1, 0, 1, 0, 0],
-                          [0, 0, 0, 0, 0, 1, 0],
-                          [1, 1, 1, 1, 0, 1, 0],
-                          [0, 0, 0, 1, 0, 0, 0],
-                          [0, 1, 0, 0, 1, 1, 0],
-                          [0, 0, 0, 0, 0, 0, 0]])
+if __name__ == "__main__":
 
-# Create an instance of the SubmazePositionExtractor
-submaze_extractor = SubmazePositionExtractor(original_maze)
+    # Define the original maze
+    original_maze = np.array([[0, 0, 1, 0, 0, 1, 0],
+                            [0, 1, 1, 0, 1, 0, 0],
+                            [0, 0, 0, 0, 0, 1, 0],
+                            [1, 1, 1, 1, 0, 1, 0],
+                            [0, 0, 0, 1, 0, 0, 0],
+                            [0, 1, 0, 0, 1, 1, 0],
+                            [0, 0, 0, 0, 0, 0, 0]])
 
-# Add walls to the maze and print unique submatrices
-submaze_extractor.print_unique_submatrices()
+    # Create an instance of the SubmazePositionExtractor
+    submaze_extractor = SubmazePositionExtractor(original_maze)
 
-# Find positions of a specific submaze given its contracted representation
-contracted_submaze = "101000111"
-positions = submaze_extractor.find_positions_of_submaze(contracted_submaze)
-print(f"Positions of submaze '{contracted_submaze}': {positions}")
+    # Add walls to the maze and print unique submatrices
+    # submaze_extractor.print_unique_submatrices()
+
+    # Find positions of a specific submaze given its contracted representation
+    contracted_submaze = "111100101"
+    positions = submaze_extractor.find_positions_of_submaze(contracted_submaze)
+    print(f"Positions of submaze '{contracted_submaze}': {positions}")
