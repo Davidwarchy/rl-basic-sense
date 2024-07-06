@@ -23,7 +23,7 @@ class SimpleMazeEnv(gym.Env):
         
         self.agent_marker = self.ax.scatter(*self._maze_to_plot(self.agent_position), color='red', marker='o', s=100)
         self.goal_marker = self.ax.scatter(*self._maze_to_plot(self.goal_position), color='green', marker='*', s=100)
-        self.ax.imshow(self.maze, cmap='binary', interpolation='nearest')
+        # self.ax.imshow(self.maze, cmap='binary', interpolation='nearest')
 
     def _maze_to_plot(self, position):
         """Convert maze coordinates to plot coordinates."""

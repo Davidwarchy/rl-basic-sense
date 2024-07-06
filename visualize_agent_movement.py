@@ -3,15 +3,22 @@ import matplotlib.pyplot as plt
 import numpy as np
 from maze_env import SimpleMazeEnv
 
-def visualize_agent_movement(q_table_file, maze):
-    # Load Q-table history and episode iteration data from JSON file
-    with open(q_table_file, 'r') as f:
-        data = json.load(f)
-    q_table_history = data['q_table_history']
-    episode_iterations = data['episode_iterations']
+# Load Q-table history and episode iteration data from JSON file
+q_table_file = 'output/q_learning_data.json'
 
-    # Convert Q-table history back to original format
-    q_table_history = [{k: np.array(v) for k, v in q.items()} for q in q_table_history]
+with open(q_table_file, 'r') as f:
+    data = json.load(f)
+q_table_history = data['q_table_history']
+episode_iterations = data['episode_iterations']
+
+# Convert Q-table history back to original format
+q_table_history = [{k: np.array(v) for k, v in q.items()} for q in q_table_history]
+
+# Use the Q-table from the last episode for visualization
+q_table = q_table_history[-1]
+agent_positions = []
+
+def visualize_agent_movement(maze):
 
     # Initialize environment
     env = SimpleMazeEnv(maze)
@@ -19,10 +26,6 @@ def visualize_agent_movement(q_table_file, maze):
     def state_to_index(state):
         # Convert local observation 3x3 grid to a single integer index
         return ''.join(map(str, state.flatten().astype(int)))
-
-    # Use the Q-table from the last episode for visualization
-    q_table = q_table_history[-1]
-    agent_positions = []
 
     # Reset environment to start visualization
     local_obs = env.reset()
@@ -59,13 +62,14 @@ def visualize_agent_movement(q_table_file, maze):
 
 # Usage example:
 maze = [
-    [0, 1, 0, 0, 0],
-    [0, 1, 0, 1, 0],
-    [0, 0, 0, 1, 0],
-    [1, 1, 0, 1, 0],
-    [0, 0, 0, 1, 0]
+    [0, 0, 1, 0, 0, 1, 0],
+     [0, 1, 1, 0, 1, 0, 0],
+     [0, 0, 0, 0, 0, 1, 0],
+     [1, 1, 1, 1, 0, 1, 0],
+     [0, 0, 0, 1, 0, 0, 0],
+     [0, 1, 0, 0, 1, 1, 0],
+     [0, 0, 0, 0, 0, 0, 0]
 ]
 
-q_table_file = 'output/q_learning_data.json'
-steps_taken = visualize_agent_movement(q_table_file, maze)
+steps_taken = visualize_agent_movement(maze)
 print(f"Total steps taken by the agent: {steps_taken}")
