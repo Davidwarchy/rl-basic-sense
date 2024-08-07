@@ -49,8 +49,8 @@ def visualize_agent_movement( maze):
         steps += 1
 
     # Plot the agent's movement
-    plt.figure()
-    env.render()
+    # plt.figure()
+    # env.render()
 
     # Plot agent's path
     for pos in agent_positions:
@@ -68,6 +68,12 @@ mazes = [
      [0, 0, 0, 1, 0],
      [1, 1, 0, 1, 0],
      [0, 0, 0, 1, 0]],
+
+    [[0, 0, 1, 1, 1],
+     [1, 0, 0, 0, 1],
+     [1, 1, 1, 0, 1],
+     [1, 0, 0, 0, 1],
+     [1, 1, 1, 0, 0]],
 
     [[0, 1, 0, 0, 0, 1],
      [0, 1, 0, 1, 0, 1],
